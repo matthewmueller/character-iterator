@@ -25,7 +25,7 @@ function Iterator(node, parent, offset) {
   this.it = it(node, parent).filter(Node.TEXT_NODE);
   this.left = text.slice(0, offset);
   this.loff = offset - 1;
-  this.right = text.slice(offset - 1);
+  this.right = offset ? text.slice(offset - 1) : text.slice(offset);
   this.roff = offset;
 }
 

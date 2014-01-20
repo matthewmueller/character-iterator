@@ -52,4 +52,10 @@ describe('character-iterator', function() {
     assert('.' == it.next());
     assert(null == it.next());
   });
+
+  it('should have a good default', function() {
+    var it = iterator(el.querySelector('strong').childNodes[2], el);
+    assert('e' == it.next());
+    assert('r' == it.next());
+  })
 })
