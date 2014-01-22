@@ -24,9 +24,11 @@ function Iterator(node, parent, offset) {
   offset = offset || 0;
   this.it = it(node, parent).filter(Node.TEXT_NODE);
   this.left = text.slice(0, offset);
-  this.loff = offset - 1;
+  this.leftNode = node;
+  this.leftOffset = offset - 1;
   this.right = offset ? text.slice(offset) : text.slice(offset);
-  this.roff = 0;
+  this.rightNode = node;
+  this.rightOffset = 0;
 }
 
 /**
@@ -36,15 +38,16 @@ function Iterator(node, parent, offset) {
  */
 
 Iterator.prototype.next = function() {
-  var ch = this.right[this.roff++];
+  var ch = this.right[this.rightOffset++];
   var node;
 
   while (!ch) {
     node = this.it.next();
     if (!node) return null;
+    this.rightNode = node;
     this.right = node.nodeValue;
-    this.roff = 0;
-    ch = this.right[this.roff++];
+    this.rightOffset = 0;
+    ch = this.right[this.rightOffset++];
   }
 
   return ch;
@@ -58,19 +61,16 @@ Iterator.prototype.next = function() {
 
 Iterator.prototype.previous =
 Iterator.prototype.prev = function() {
-  var ch = this.left[this.loff--];
+  var ch = this.left[this.leftOffset--];
 
   while (!ch) {
     node = this.it.prev();
     if (!node) return null;
+    this.leftNode = node;
     this.left = node.nodeValue;
-    this.loff = this.left.length - 1;
-    ch = this.left[this.loff--];
+    this.leftOffset = this.left.length - 1;
+    ch = this.left[this.leftOffset--];
   }
 
   return ch;
 };
-
-
-
-
