@@ -48,6 +48,21 @@ describe('character-iterator', function() {
     i.reset();
     verify(i, 'prev', [null])
   })
+
+  it('should only go in one direction', function() {
+    dom = domify('hi there');
+    i = iterator(dom);
+    // |hi there
+    assert('h' == i.next());
+    // h|i there
+    assert('i' == i.next());
+    // hi| there
+    assert('i' == i.prev());
+    // h|i there
+    assert('h' == i.prev());
+    // |hi there
+    assert(null === i.prev());
+  });
 })
 
 function verify(it, dir, expected) {
