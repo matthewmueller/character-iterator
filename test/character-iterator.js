@@ -33,6 +33,13 @@ describe('character-iterator', function() {
     i.reset();
     verify(i, 'prev', ['l', 'l', 'e', 'u', 'm', ' ', 'w', 'e', 'h', 't', 't', 'a', 'm', ' ', ',', 'e', 'r', 'e', 'h', 't', ' ' , 'i', 'h', null]);
   })
+
+  it('should work with element nodes', function() {
+    var i = iterator(el.querySelector('em'), 3);
+    verify(i, 'next', ['l', 'l', 'e', 'r', '.', null]);
+    i.reset();
+    verify(i, 'prev', ['e', 'u', 'm', ' ', 'w', 'e', 'h', 't', 't', 'a', 'm', ' ', ',', 'e', 'r', 'e', 'h', 't', ' ' , 'i', 'h', null]);
+  })
 })
 
 function verify(it, dir, expected) {
