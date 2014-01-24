@@ -24,7 +24,7 @@ assert('!' == it.next());
 
 ### `iterator(el, [offset])`
 
-Get the next character in the DOM starting at `el` with `offset`. If `offset` isn't specified it defaults to 0.
+Get the next character in the DOM starting at `el` with `offset`. If `offset` isn't specified it starts at 0.
 
 ### `iterator#next()`
 

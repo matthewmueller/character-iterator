@@ -21,16 +21,24 @@ module.exports = Iterator;
 
 function Iterator(node, offset) {
   if (!(this instanceof Iterator)) return new Iterator(node, offset);
-  var text = node.textContent;
-  offset = offset || 0;
   this.it = it(node).filter(Node.TEXT_NODE);
-  this.prevText = text.slice(0, offset);
-  this.prevNode = node;
-  this.prevOffset = offset - 1;
-  this.nextText = offset ? text.slice(offset) : text.slice(offset);
-  this.nextNode = node;
-  this.nextOffset = 0;
+  this.initialize(node, offset);
 }
+
+/**
+ * Initialize
+ *
+ * @param {Node} node
+ * @param {Number} offset
+ * @return {Iterator}
+ * @api private
+ */
+
+Iterator.prototype.initialize = function(node, offset) {
+  this.node = node || this.it.start;
+  this.offset = this.so = offset || this.so || 0;
+  this.text = (3 == this.node.nodeType) ? this.node.nodeValue : null;
+};
 
 /**
  * Next character
@@ -40,16 +48,23 @@ function Iterator(node, offset) {
  */
 
 Iterator.prototype.next = function() {
-  var ch = this.nextText[this.nextOffset++];
+  // initial setup when node is an element node
+  if (!this.text) {
+    this.node = this.it.next();
+    if (!this.node) return null;
+    this.text = this.node.nodeValue;
+  }
+
+  var ch = this.text[this.offset++];
   var node;
 
   while (!ch) {
     node = this.it.next();
     if (!node) return null;
-    this.nextNode = node;
-    this.nextText = node.nodeValue;
-    this.nextOffset = 0;
-    ch = this.nextText[this.nextOffset++];
+    this.node = node;
+    this.text = node.nodeValue;
+    this.offset = 0;
+    ch = this.text[this.offset++];
   }
 
   return ch;
@@ -64,15 +79,23 @@ Iterator.prototype.next = function() {
 
 Iterator.prototype.previous =
 Iterator.prototype.prev = function() {
-  var ch = this.prevText[this.prevOffset--];
+  // initial setup when node is an element node
+  if (!this.text) {
+    this.node = this.it.prev();
+    if (!this.node) return null;
+    this.text = this.node.nodeValue;
+  }
+
+  var ch = this.text[--this.offset];
+  var node;
 
   while (!ch) {
     node = this.it.prev();
     if (!node) return null;
-    this.prevNode = node;
-    this.prevText = node.nodeValue;
-    this.prevOffset = this.prevText.length - 1;
-    ch = this.prevText[this.prevOffset--];
+    this.node = node;
+    this.text = node.nodeValue;
+    this.offset = this.text.length;
+    ch = this.text[--this.offset];
   }
 
   return ch;
@@ -86,8 +109,9 @@ Iterator.prototype.prev = function() {
  * @api public
  */
 
-Iterator.prototype.reset = function(node) {
+Iterator.prototype.reset = function(node, offset) {
   this.it.reset(node);
+  this.initialize(node, offset);
   return this;
 };
 
