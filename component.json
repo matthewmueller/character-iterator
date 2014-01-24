@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "keywords": [],
   "dependencies": {
-    "matthewmueller/dom-iterator": "*"
+    "matthewmueller/dom-iterator": "0.0.1"
   },
   "development": {
     "component/assert": "*",

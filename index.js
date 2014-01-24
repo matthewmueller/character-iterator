@@ -15,14 +15,15 @@ module.exports = Iterator;
  *
  * @param {TextNode} node
  * @param {Number} offset
- * @return {Iterator} [description]
+ * @return {Iterator}
+ * @api public
  */
 
-function Iterator(node, parent, offset) {
-  if (!(this instanceof Iterator)) return new Iterator(node, parent, offset);
+function Iterator(node, offset) {
+  if (!(this instanceof Iterator)) return new Iterator(node, offset);
   var text = node.textContent;
   offset = offset || 0;
-  this.it = it(node, parent).filter(Node.TEXT_NODE);
+  this.it = it(node).filter(Node.TEXT_NODE);
   this.left = text.slice(0, offset);
   this.leftNode = node;
   this.leftOffset = offset - 1;
@@ -35,6 +36,7 @@ function Iterator(node, parent, offset) {
  * Next character
  *
  * @return {String} ch
+ * @api public
  */
 
 Iterator.prototype.next = function() {
@@ -57,6 +59,7 @@ Iterator.prototype.next = function() {
  * Previous character
  *
  * @return {String} ch
+ * @api public
  */
 
 Iterator.prototype.previous =
@@ -74,3 +77,17 @@ Iterator.prototype.prev = function() {
 
   return ch;
 };
+
+/**
+ * Reset the iterator
+ *
+ * @param {Node} node (optional)
+ * @return {Iterator}
+ * @api public
+ */
+
+Iterator.prototype.reset = function(node) {
+  this.it.reset(node);
+  return this;
+};
+
