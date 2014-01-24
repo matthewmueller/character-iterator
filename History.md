@@ -1,4 +1,11 @@
 
+0.0.4 / 2014-01-24
+==================
+
+ * test: for going in multiple directions
+ * refactor: to only go in one direction at a time
+ * test: ensure that iterator doesn't repeat
+
 0.0.3 / 2014-01-24
 ==================
 
