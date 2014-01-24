@@ -11,51 +11,35 @@ var domify = require('domify');
  */
 
 describe('character-iterator', function() {
-  var el;
+  var i, el;
 
   beforeEach(function() {
     el = domify('<p>hi<u></u> there, <strong>matthew <em>muell</em>er</strong>.</p>');
   })
 
   it('go back', function() {
-    var it = iterator(el.querySelector('strong').childNodes[2], el, 1);
-    assert('e' == it.prev());
-    assert('l' == it.prev());
-    assert('l' == it.prev());
-    assert('e' == it.prev());
-    assert('u' == it.prev());
-    assert('m' == it.prev());
-    assert(' ' == it.prev());
-    assert('w' == it.prev());
-    assert('e' == it.prev());
-    assert('h' == it.prev());
-    assert('t' == it.prev());
-    assert('t' == it.prev());
-    assert('a' == it.prev());
-    assert('m' == it.prev());
-    assert(' ' == it.prev());
-    assert(',' == it.prev());
-    assert('e' == it.prev());
-    assert('r' == it.prev());
-    assert('e' == it.prev());
-    assert('h' == it.prev());
-    assert('t' == it.prev());
-    assert(' ' == it.prev());
-    assert('i' == it.prev());
-    assert('h' == it.prev());
-    assert(null == it.prev())
+    i = iterator(el.querySelector('strong').childNodes[2], 1);
+    verify(i, 'prev', ['e', 'l', 'l', 'e', 'u', 'm', ' ', 'w', 'e', 'h', 't', 't', 'a', 'm', ' ', ',', 'e', 'r', 'e', 'h', 't', ' ' , 'i', 'h', null]);
   });
 
   it('go forward', function() {
-    var it = iterator(el.querySelector('strong').childNodes[2], el, 1);
-    assert('r' == it.next());
-    assert('.' == it.next());
-    assert(null == it.next());
+    i = iterator(el.querySelector('strong').childNodes[2], 1);
+    verify(i, 'next', ['r', '.', null]);
   });
 
   it('should have a good default', function() {
-    var it = iterator(el.querySelector('strong').childNodes[2], el);
-    assert('e' == it.next());
-    assert('r' == it.next());
+    var i = iterator(el.querySelector('strong').childNodes[2]);
+    verify(i, 'next', ['e', 'r', '.', null]);
+    i.reset();
+    verify(i, 'prev', ['l', 'l', 'e', 'u', 'm', ' ', 'w', 'e', 'h', 't', 't', 'a', 'm', ' ', ',', 'e', 'r', 'e', 'h', 't', ' ' , 'i', 'h', null]);
   })
 })
+
+function verify(it, dir, expected) {
+  expected.forEach(function(expect) {
+    var n = it[dir]();
+    if (null == expect) return assert(null == n, 'it.' + dir + '() should be null');
+    assert(n, 'it.' + dir + '() should not be null. Expected: ' + expect)
+    assert(expect == n, 'expected ' + expect + ' got ' + n);
+  });
+}
