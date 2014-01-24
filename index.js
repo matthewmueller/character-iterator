@@ -40,7 +40,7 @@ function Iterator(node, offset) {
  */
 
 Iterator.prototype.next = function() {
-  var ch = this.nextText[this.nextyOffset++];
+  var ch = this.nextText[this.nextOffset++];
   var node;
 
   while (!ch) {
