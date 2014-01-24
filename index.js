@@ -24,12 +24,12 @@ function Iterator(node, offset) {
   var text = node.textContent;
   offset = offset || 0;
   this.it = it(node).filter(Node.TEXT_NODE);
-  this.left = text.slice(0, offset);
-  this.leftNode = node;
-  this.leftOffset = offset - 1;
-  this.right = offset ? text.slice(offset) : text.slice(offset);
-  this.rightNode = node;
-  this.rightOffset = 0;
+  this.prevText = text.slice(0, offset);
+  this.prevNode = node;
+  this.prevOffset = offset - 1;
+  this.nextText = offset ? text.slice(offset) : text.slice(offset);
+  this.nextNode = node;
+  this.nextOffset = 0;
 }
 
 /**
@@ -40,16 +40,16 @@ function Iterator(node, offset) {
  */
 
 Iterator.prototype.next = function() {
-  var ch = this.right[this.rightOffset++];
+  var ch = this.nextText[this.nextyOffset++];
   var node;
 
   while (!ch) {
     node = this.it.next();
     if (!node) return null;
-    this.rightNode = node;
-    this.right = node.nodeValue;
-    this.rightOffset = 0;
-    ch = this.right[this.rightOffset++];
+    this.nextNode = node;
+    this.nextText = node.nodeValue;
+    this.nextOffset = 0;
+    ch = this.nextText[this.nextOffset++];
   }
 
   return ch;
@@ -64,15 +64,15 @@ Iterator.prototype.next = function() {
 
 Iterator.prototype.previous =
 Iterator.prototype.prev = function() {
-  var ch = this.left[this.leftOffset--];
+  var ch = this.prevText[this.prevOffset--];
 
   while (!ch) {
     node = this.it.prev();
     if (!node) return null;
-    this.leftNode = node;
-    this.left = node.nodeValue;
-    this.leftOffset = this.left.length - 1;
-    ch = this.left[this.leftOffset--];
+    this.prevNode = node;
+    this.prevText = node.nodeValue;
+    this.prevOffset = this.prevText.length - 1;
+    ch = this.prevText[this.prevOffset--];
   }
 
   return ch;
