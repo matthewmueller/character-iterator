@@ -40,6 +40,14 @@ describe('character-iterator', function() {
     i.reset();
     verify(i, 'prev', ['e', 'u', 'm', ' ', 'w', 'e', 'h', 't', 't', 'a', 'm', ' ', ',', 'e', 'r', 'e', 'h', 't', ' ' , 'i', 'h', null]);
   })
+
+  it('should not repeat itself', function() {
+    dom = domify('<p>hi there jimmy</p>');
+    i = iterator(dom);
+    verify(i, 'next', ['h', 'i', ' ', 't', 'h', 'e', 'r', 'e', ' ', 'j', 'i', 'm', 'm', 'y', null])
+    i.reset();
+    verify(i, 'prev', [null])
+  })
 })
 
 function verify(it, dir, expected) {
