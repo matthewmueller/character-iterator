@@ -9,7 +9,16 @@
 
     $ component install matthewmueller/character-iterator
 
-###
+### Example
+
+```js
+var el = domify('<p>hi<u></u> there, <strong>cowboy <em>dude</em>!</strong>!</p>');
+var it = iterator(el.querySelector('em'), 2)
+assert('d' == it.next());
+assert('e' == it.next());
+assert('!' == it.next());
+assert('!' == it.next());
+```
 
 ## API
 
