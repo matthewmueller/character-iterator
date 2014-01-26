@@ -48,7 +48,9 @@ Iterator.prototype.initialize = function(node, offset) {
  */
 
 Iterator.prototype.next = function() {
-  // initial setup when node is an element node
+  this.peaked = null;
+
+  // initial setup when `this.node` isnt a text node
   if (!this.text) {
     this.node = this.it.next();
     if (!this.node) return null;
@@ -79,7 +81,9 @@ Iterator.prototype.next = function() {
 
 Iterator.prototype.previous =
 Iterator.prototype.prev = function() {
-  // initial setup when node is an element node
+  this.peaked = null;
+
+  // initial setup when `this.node` isnt a text node
   if (!this.text) {
     this.node = this.it.prev();
     if (!this.node) return null;
@@ -100,6 +104,26 @@ Iterator.prototype.prev = function() {
 
   return ch;
 };
+
+/**
+ * Peak in either direction
+ * `n` nodes. Peak backwards
+ * using negative numbers.
+ *
+ * @param {Number} n (optional)
+ * @return {Node|null}
+ * @api public
+ */
+
+Iterator.prototype.peak = function(n) {
+  n = undefined == n ? 1 : n;
+  var peaked = this.peaked = this.peaked || new Iterator(this.node, this.offset);
+
+  if (!n) return null;
+  else if (n > 0) while(n--) node = peaked.next();
+  else while(n++) node = peaked.prev();
+  return node;
+}
 
 /**
  * Reset the iterator

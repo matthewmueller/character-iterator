@@ -63,6 +63,64 @@ describe('character-iterator', function() {
     // |hi there
     assert(null === i.prev());
   });
+
+  describe('peak', function() {
+    it('should allow you to peak in front', function() {
+      dom = domify('hi there');
+      i = iterator(dom);
+      assert('h' == i.peak());
+      assert('h' == i.next());
+    })
+
+    it('should allow you to peak behind', function() {
+      dom = domify('hi there');
+      i = iterator(dom, 5);
+      assert('h' == i.peak(-1));
+      assert('h' == i.prev());
+      assert('t' == i.prev());
+    })
+
+    it('should allow you to peak in front multiple nodes', function() {
+      dom = domify('hi there');
+      i = iterator(dom);
+      assert('t' == i.peak(4));
+      assert('h' == i.next());
+    })
+
+    it('should allow you to peak behind multiple nodes', function() {
+      dom = domify('hi there');
+      i = iterator(dom, 5);
+      assert('i' == i.peak(-4));
+      assert('h' == i.prev());
+      assert('t' == i.prev());
+    })
+
+    it('peaking should chain', function() {
+      dom = domify('hi there');
+      i = iterator(dom);
+      assert('h' == i.peak());
+      assert('i' == i.peak());
+      assert('h' == i.next());
+    })
+
+    it('should reset chain after calling next', function() {
+      dom = domify('hi there');
+      i = iterator(dom);
+      assert('h' == i.peak());
+      assert('i' == i.peak());
+      assert('h' == i.next());
+      assert('i' == i.peak());
+    })
+
+    it('should reset chain after calling prev', function() {
+      dom = domify('hi there');
+      i = iterator(dom, 5);
+      assert('i' == i.peak(-4));
+      assert('h' == i.prev());
+      assert('t' == i.peak(-1));
+    })
+  })
+
 })
 
 function verify(it, dir, expected) {
