@@ -1,4 +1,10 @@
 
+0.1.0 / 2014-01-27
+==================
+
+ * add: optional root. `new iterator(node, [offset], [root])`
+ * remove: `it#reset()`
+
 0.0.5 / 2014-01-26
 ==================
 

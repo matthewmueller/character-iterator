@@ -2,7 +2,7 @@
   "name": "character-iterator",
   "repo": "matthewmueller/character-iterator",
   "description": "iterate through text characters in the DOM tree",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "keywords": [],
   "dependencies": {
     "matthewmueller/dom-iterator": "0.0.1"
