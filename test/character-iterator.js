@@ -28,16 +28,16 @@ describe('character-iterator', function() {
   });
 
   it('should have a good default', function() {
-    var i = iterator(el.querySelector('strong').childNodes[2]);
+    i = iterator(el.querySelector('strong').childNodes[2]);
     verify(i, 'next', ['e', 'r', '.', null]);
-    i.reset();
+    i = iterator(el.querySelector('strong').childNodes[2]);
     verify(i, 'prev', ['l', 'l', 'e', 'u', 'm', ' ', 'w', 'e', 'h', 't', 't', 'a', 'm', ' ', ',', 'e', 'r', 'e', 'h', 't', ' ' , 'i', 'h', null]);
   })
 
   it('should work with element nodes', function() {
-    var i = iterator(el.querySelector('em'), 3);
+    i = iterator(el.querySelector('em'), 3);
     verify(i, 'next', ['l', 'l', 'e', 'r', '.', null]);
-    i.reset();
+    i = iterator(el.querySelector('em'), 3);
     verify(i, 'prev', ['e', 'u', 'm', ' ', 'w', 'e', 'h', 't', 't', 'a', 'm', ' ', ',', 'e', 'r', 'e', 'h', 't', ' ' , 'i', 'h', null]);
   })
 
@@ -45,7 +45,7 @@ describe('character-iterator', function() {
     dom = domify('<p>hi there jimmy</p>');
     i = iterator(dom);
     verify(i, 'next', ['h', 'i', ' ', 't', 'h', 'e', 'r', 'e', ' ', 'j', 'i', 'm', 'm', 'y', null])
-    i.reset();
+    i = iterator(dom);
     verify(i, 'prev', [null])
   })
 
@@ -63,6 +63,13 @@ describe('character-iterator', function() {
     // |hi there
     assert(null === i.prev());
   });
+
+  it('you should be able to specify a root', function() {
+    i = iterator(el.querySelector('em'), 0, el.querySelector('strong'));
+    verify(i, 'next', ['m', 'u', 'e', 'l', 'l', 'e', 'r', null]);
+    i = iterator(el.querySelector('em'), 0, el.querySelector('strong'));
+    verify(i, 'prev', [' ', 'w', 'e', 'h', 't', 't', 'a', 'm', null]);
+  })
 
   describe('peak', function() {
     it('should allow you to peak in front', function() {

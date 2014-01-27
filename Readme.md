@@ -22,9 +22,9 @@ assert('!' == it.next());
 
 ## API
 
-### `iterator(el, [offset])`
+### `iterator(el, [offset], [root])`
 
-Get the next character in the DOM starting at `el` with `offset`. If `offset` isn't specified it starts at 0.
+Get the next character in the DOM starting at `el` with `offset`. If `offset` isn't specified it starts at 0. You can also set an optional `root` to contain the iterator.
 
 ### `iterator#next()`
 
@@ -33,10 +33,6 @@ Move on to the next character. If at the end, return `null`.
 ### `iterator#prev()`
 
 Move on to the previous character. If at the end, return `null`.
-
-### `iterator.reset([newNode])`
-
-Reset the iterator to the original `node`. Optionally pass a `newNode` to start at.
 
 ## Test
 

@@ -15,30 +15,19 @@ module.exports = Iterator;
  *
  * @param {TextNode} node
  * @param {Number} offset
+ * @param {Node} root
  * @return {Iterator}
  * @api public
  */
 
-function Iterator(node, offset) {
-  if (!(this instanceof Iterator)) return new Iterator(node, offset);
+function Iterator(node, offset, root) {
+  if (!(this instanceof Iterator)) return new Iterator(node, offset, root);
   this.it = it(node).filter(Node.TEXT_NODE);
-  this.initialize(node, offset);
-}
-
-/**
- * Initialize
- *
- * @param {Node} node
- * @param {Number} offset
- * @return {Iterator}
- * @api private
- */
-
-Iterator.prototype.initialize = function(node, offset) {
   this.node = node || this.it.start;
-  this.offset = this.so = offset || this.so || 0;
+  this.offset = offset || 0;
+  this.root = root || null;
   this.text = (3 == this.node.nodeType) ? this.node.nodeValue : null;
-};
+}
 
 /**
  * Next character
@@ -49,20 +38,22 @@ Iterator.prototype.initialize = function(node, offset) {
 
 Iterator.prototype.next = function() {
   this.peaked = null;
+  var root = this.root;
+  var node;
 
   // initial setup when `this.node` isnt a text node
   if (!this.text) {
-    this.node = this.it.next();
-    if (!this.node) return null;
+    node = this.it.next();
+    if (!node || higher(node, root)) return null;
+    this.node = node;
     this.text = this.node.nodeValue;
   }
 
   var ch = this.text[this.offset++];
-  var node;
 
   while (!ch) {
     node = this.it.next();
-    if (!node) return null;
+    if (!node || higher(node, root)) return null;
     this.node = node;
     this.text = node.nodeValue;
     this.offset = 0;
@@ -82,20 +73,22 @@ Iterator.prototype.next = function() {
 Iterator.prototype.previous =
 Iterator.prototype.prev = function() {
   this.peaked = null;
+  var root = this.root;
+  var node;
 
   // initial setup when `this.node` isnt a text node
   if (!this.text) {
-    this.node = this.it.prev();
-    if (!this.node) return null;
+    node = this.it.prev();
+    if (!node || higher(node, root)) return null;
+    this.node = node;
     this.text = this.node.nodeValue;
   }
 
   var ch = this.text[--this.offset];
-  var node;
 
   while (!ch) {
     node = this.it.prev();
-    if (!node) return null;
+    if (!node || higher(node, root)) return null;
     this.node = node;
     this.text = node.nodeValue;
     this.offset = this.text.length;
@@ -117,7 +110,7 @@ Iterator.prototype.prev = function() {
 
 Iterator.prototype.peak = function(n) {
   n = undefined == n ? 1 : n;
-  var peaked = this.peaked = this.peaked || new Iterator(this.node, this.offset);
+  var peaked = this.peaked = this.peaked || new Iterator(this.node, this.offset, this.root);
 
   if (!n) return null;
   else if (n > 0) while(n--) node = peaked.next();
@@ -126,16 +119,16 @@ Iterator.prototype.peak = function(n) {
 }
 
 /**
- * Reset the iterator
+ * Utility: Check if node is higher
+ * than root. Also checks if root
+ * exists
  *
- * @param {Node} node (optional)
- * @return {Iterator}
- * @api public
+ * @param {Node} node
+ * @param {Node} root
+ * @return {Boolean}
+ * @api private
  */
 
-Iterator.prototype.reset = function(node, offset) {
-  this.it.reset(node);
-  this.initialize(node, offset);
-  return this;
-};
-
+function higher(node, root) {
+  return root && !root.contains(node);
+}
