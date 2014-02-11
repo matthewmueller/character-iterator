@@ -22,10 +22,10 @@ module.exports = Iterator;
 
 function Iterator(node, offset, root) {
   if (!(this instanceof Iterator)) return new Iterator(node, offset, root);
-  this.it = it(node).filter(Node.TEXT_NODE);
+  this.it = it(node, root).select(Node.TEXT_NODE).revisit(false);
   this.node = node || this.it.start;
-  this.offset = offset || 0;
-  this.root = root || null;
+  this.offset = undefined == offset ? 0 : offset;
+  this.root = root;
   this.text = (3 == this.node.nodeType) ? this.node.nodeValue : null;
 }
 
@@ -38,13 +38,12 @@ function Iterator(node, offset, root) {
 
 Iterator.prototype.next = function() {
   this.peaked = null;
-  var root = this.root;
   var node;
 
   // initial setup when `this.node` isnt a text node
   if (!this.text) {
     node = this.it.next();
-    if (!node || higher(node, root)) return null;
+    if (!node) return null;
     this.node = node;
     this.text = this.node.nodeValue;
   }
@@ -53,7 +52,7 @@ Iterator.prototype.next = function() {
 
   while (!ch) {
     node = this.it.next();
-    if (!node || higher(node, root)) return null;
+    if (!node) return null;
     this.node = node;
     this.text = node.nodeValue;
     this.offset = 0;
@@ -73,13 +72,12 @@ Iterator.prototype.next = function() {
 Iterator.prototype.previous =
 Iterator.prototype.prev = function() {
   this.peaked = null;
-  var root = this.root;
   var node;
 
   // initial setup when `this.node` isnt a text node
   if (!this.text) {
-    node = this.it.prev();
-    if (!node || higher(node, root)) return null;
+    node = this.it.closing().prev();
+    if (!node) return null;
     this.node = node;
     this.text = this.node.nodeValue;
   }
@@ -88,7 +86,7 @@ Iterator.prototype.prev = function() {
 
   while (!ch) {
     node = this.it.prev();
-    if (!node || higher(node, root)) return null;
+    if (!node) return null;
     this.node = node;
     this.text = node.nodeValue;
     this.offset = this.text.length;
