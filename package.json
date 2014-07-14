@@ -6,7 +6,13 @@
   "contributors": [
     "Nathan Rajlich <nathan@automattic.com>"
   ],
-  "keywords": [],
+  "keywords": [
+    "browser",
+    "dom",
+    "char",
+    "character",
+    "iterate"
+  ],
   "dependencies": {
     "dom-iterator": "0.2.1"
   },
