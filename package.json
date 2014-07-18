@@ -1,0 +1,30 @@
+{
+  "name": "character-iterator",
+  "version": "0.1.1",
+  "description": "iterate through text characters in the DOM tree",
+  "author": "Matthew Mueller",
+  "contributors": [
+    "Nathan Rajlich <nathan@automattic.com>"
+  ],
+  "keywords": [
+    "browser",
+    "dom",
+    "char",
+    "character",
+    "iterate"
+  ],
+  "dependencies": {
+    "dom-iterator": "0.2.1"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "component": {
+    "scripts": {
+      "character-iterator/index.js": "index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matthewmueller/character-iterator.git"
+  }
+}

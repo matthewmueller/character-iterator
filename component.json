@@ -3,9 +3,15 @@
   "repo": "matthewmueller/character-iterator",
   "description": "iterate through text characters in the DOM tree",
   "version": "0.1.1",
-  "keywords": [],
+  "keywords": [
+    "browser",
+    "dom",
+    "char",
+    "character",
+    "iterate"
+  ],
   "dependencies": {
-    "matthewmueller/dom-iterator": "0.2.0"
+    "matthewmueller/dom-iterator": "0.2.1"
   },
   "development": {
     "component/assert": "*",
