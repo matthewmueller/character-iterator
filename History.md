@@ -1,4 +1,12 @@
 
+0.1.2 / 2014-07-20
+==================
+
+ * package: add "component-test" as a dev dependency
+ * component, package: update "dom-iterator" to v0.3.0
+ * component, package: add "keywords"
+ * add package.json file
+
 0.1.1 / 2014-02-11
 ==================
 
