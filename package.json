@@ -26,5 +26,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/matthewmueller/character-iterator.git"
+  },
+  "devDependencies": {
+    "component-test": "*"
   }
 }
