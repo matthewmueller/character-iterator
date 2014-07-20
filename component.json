@@ -11,7 +11,7 @@
     "iterate"
   ],
   "dependencies": {
-    "matthewmueller/dom-iterator": "0.2.1"
+    "matthewmueller/dom-iterator": "0.3.0"
   },
   "development": {
     "component/assert": "*",

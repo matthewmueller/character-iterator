@@ -14,7 +14,7 @@
     "iterate"
   ],
   "dependencies": {
-    "dom-iterator": "0.2.1"
+    "dom-iterator": "0.3.0"
   },
   "license": "MIT",
   "main": "index.js",
